@@ -47,6 +47,6 @@
         "type": "string",
         "hint": "Set the URL of your endpoint where the images get delivered from",
         "doc_link": true,
-        "default": false
+        "default": ""
     }]
 }
