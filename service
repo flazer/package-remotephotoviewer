@@ -8,7 +8,6 @@ import requests
 from hosted import CONFIG
 
 CONFIG.restart_on_update()
-REMOTEVIEWER = ['remotephotoviewer']
 
 MAX_PHOTOS = 40
 
@@ -21,7 +20,7 @@ def log(msg):
     print >>sys.stderr, msg
 
 def get_photos(amount=10):
-    photos = requests.get(REMOTEVIEWER['api_url'], params = dict(
+    photos = requests.get(CONFIG['api_url'], params = dict(
         amount = amount
     )).json()
 

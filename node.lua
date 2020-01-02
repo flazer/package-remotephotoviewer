@@ -4,7 +4,6 @@ local json = require "json"
 
 local font = resource.load_font "roboto.ttf"
 local black = resource.create_colored_texture(0,0,0,1)
-local flickr = resource.load_image "package.png"
 
 local shaders = {
     multisample = resource.create_shader[[
@@ -166,20 +165,6 @@ end)()
 local ImageJob = function(item, ctx, fn)
     fn.wait_t(ctx.starts - settings.IMAGE_PRELOAD)
 
-    local copyright = function() end
-
-    if item.meta then
-        local size = 14
-        local text = string.format("%s - by %s - %s", 
-            item.meta.title, item.meta.user_info.name, item.meta.user_info.profile)
-        local text_width = font:width(text, size)
-        copyright = function(alpha)
-            black:draw(WIDTH - text_width - 5, HEIGHT - size - 5, WIDTH, HEIGHT, 0.6*alpha)
-            font:write(WIDTH - text_width - 2, HEIGHT - size - 3, 
-                text, size, 0.8, 0.8, 0.8, alpha)
-        end
-    end
-
     local res = resource.load_image{
         file = ctx.asset,
         mipmap = true,
@@ -233,7 +218,6 @@ local ImageJob = function(item, ctx, fn)
                 ctx.starts, ctx.ends, now, Config.get_switch_time()
             ))
             shader:deactivate()
-            copyright(ramp(ctx.starts+2, math.min(ctx.ends-1, ctx.starts+15), now, 0.5))
             if now > ctx.ends then
                 break
             end
@@ -243,7 +227,6 @@ local ImageJob = function(item, ctx, fn)
             util.draw_correct(res, 0, 0, WIDTH, HEIGHT, ramp(
                 ctx.starts, ctx.ends, now, Config.get_switch_time()
             ))
-            copyright(ramp(ctx.starts+2, ctx.starts+9, now, 0.5))
             if now > ctx.ends then
                 break
             end
@@ -354,5 +337,4 @@ util.set_interval(1, node.gc)
 function node.render()
     gl.clear(0, 0, 0, 1)
     Queue.tick()
-    flickr:draw(0, HEIGHT-64, 64, HEIGHT, 0.9)
 end
