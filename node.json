@@ -44,7 +44,7 @@
         "title": "API Endpoint",
         "ui_width": 12,
         "name": "api_url",
-        "type": "text",
+        "type": "string",
         "hint": "Set the URL of your endpoint where the images get delivered from",
         "doc_link": true,
         "default": false
