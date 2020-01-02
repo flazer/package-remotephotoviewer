@@ -1,0 +1,52 @@
+{
+    "name": "Remote Photo Viewer",
+    "permissions": {
+        "network": "Needs to access your server"
+    },
+    "options": [{
+        "title": "Display options",
+        "type": "section"
+    }, {
+        "title": "Display time",
+        "ui_width": 4,
+        "name": "display_time",
+        "type": "select",
+        "doc_link": true,
+        "options": [
+            [10, "10 seconds"],
+            [30, "30 seconds (default)"],
+            [60, "one minute"],
+            [120, "two minutes"]
+        ],
+        "default": 30
+    }, {
+        "title": "Switch time",
+        "ui_width": 4,
+        "name": "switch_time",
+        "type": "select",
+        "doc_link": true,
+        "options": [
+            [0, "Instantly"],
+            [0.2, "Short"],
+            [0.4, "Medium (default)"],
+            [0.8, "Long"]
+        ],
+        "default": 0.4
+    }, {
+        "title": "Ken Burns effect",
+        "ui_width": 4,
+        "name": "kenburns",
+        "type": "boolean",
+        "hint": "Use Ken Burns effect for images",
+        "doc_link": true,
+        "default": false
+    }, {
+        "title": "API Endpoint",
+        "ui_width": 12,
+        "name": "api_url",
+        "type": "text",
+        "hint": "Set the URL of your endpoint where the images get delivered from",
+        "doc_link": true,
+        "default": false
+    }]
+}

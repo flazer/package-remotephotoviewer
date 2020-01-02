@@ -1,0 +1,64 @@
+#!/usr/bin/python
+import sys, os
+import random
+import time
+import json
+import requests
+
+from hosted import CONFIG
+
+CONFIG.restart_on_update()
+REMOTEVIEWER = ['remotephotoviewer']
+
+MAX_PHOTOS = 40
+
+def cleanup():
+    for name in os.listdir("."):
+        if name.startswith("photo-"):
+            os.unlink(name)
+
+def log(msg):
+    print >>sys.stderr, msg
+
+def get_photos(amount=10):
+    photos = requests.get(REMOTEVIEWER['api_url'], params = dict(
+        amount = amount
+    )).json()
+
+    return photos
+
+def add_photo(info, photo_data):
+    photos = sorted(name for name in os.listdir(".") if name.startswith("photo-") and name.endswith(".jpg"))
+    while len(photos) >= MAX_PHOTOS:
+        try:
+            os.unlink(photos[0])
+            os.unlink(photos[0].replace(".jpg", ".json"))
+            photos.pop(0)
+        except:
+            pass
+    basename = "photo-%012d" % (time.time())
+    info['stored'] = time.time()
+    info['jpg'] = "%s.jpg" % basename 
+    with file("%s.json" % basename, "wb") as out:
+        json.dump(info, out)
+    with file("%s.jpg" % basename, "wb") as out:
+        out.write(photo_data)
+
+def main():
+    cleanup()
+    while 1:
+        photos = get_photos(amount = 10)
+        for item in photos:
+            url = item['url']
+            log("trying to fetch %s" % url)
+            r = requests.get(url, allow_redirects=False)
+            log("status code is %d" % r.status_code)
+            if r.status_code == 200:
+                add_photo(item, r.content)
+                time.sleep(1)
+        
+        log("fetch cycle complete. waiting")
+        time.sleep(120)
+
+if __name__ == "__main__":
+    main()

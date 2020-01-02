@@ -1,0 +1,7 @@
+{
+    "name": "Remote Photo Viewer",
+    "author": "info@flazer.net",
+    "desc": "Shows remote images in a rotation",
+    "repository": "https://github.com/flazer/package-remotephotoviewer",
+    "lifecycle": "beta"
+}
